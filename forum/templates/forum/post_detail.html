@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+    <!--suppress HtmlUnknownAttribute -->
+    <link rel="stylesheet" href="{% static 'forum/css/post_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'forum_category_detail' post.thread.category.pk %}">
+                        {{ post.thread.category.name }}
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'forum_thread_detail' post.thread.pk %}">
+                        {{ post.thread.name }}
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-curcrent="page">{{ post.title }}</li>
+            </ol>
+        </nav>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="tags mb-2">
+                {% for tag in post.tags.all %}
+                    <span class="badge badge-pill badge-secondary p-2">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            <div class="container">
+                <h1 class="display-4">{{ post.title }}</h1>
+                <p class="lead">
+                    {{ post.description }}
+                </p>
+                <small class="align-items-end">Posted by {{ post.op.username }} on {{ post.created }}</small>
+            </div>
+        </div>
+        <ul class="list-unstyled">
+            {% for comment in post.comments.all %}
+                <li class="media mb-5">
+                    <img src="https://www.themuse.com/static/images/svg/icon_no_avatar.svg?v=f390a29d2cec30d977e4d9fbd0eecc0f"
+                         class="align-self-center mr-3"
+                         width="64"
+                         height="64"
+                         alt="User avatar">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ comment.commenter.username }}</h5>
+                        {{ comment.comment }}
+                        <br/>
+                        <small>{{ comment.created }}</small>
+                    </div>
+                    {% if request.user == comment.commenter %}
+                        <a href="{% url 'forum_comment_delete' comment.pk %}" class="btn btn-danger mr-3">
+                            <i style="color: white;" data-feather="trash-2"></i>
+                        </a>
+                        <a href="{% url 'forum_comment_update' comment.pk %}" class="btn btn-info">
+                            <i style="color: white;" data-feather="edit-2"></i>
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if request.user.is_authenticated %}
+        <div id="add-button">
+            <a href="{% url 'forum_comment_create' post.pk %}" class="add-comment btn btn-secondary">Add</a>
+        </div>
+    {% endif %}
+    {% if request.user == post.op %}
+        <div id="delete-button">
+            <a href="{% url 'forum_post_delete' post.pk %}" class="delete-post btn btn-secondary">Delete</a>
+        </div>
+        <div id="update-button">
+            <a href="/{% url 'forum_post_update' post.pk %}" class="update-post btn btn-secondary">Update</a>
+        </div>
+    {% endif %}
+{% endblock %}

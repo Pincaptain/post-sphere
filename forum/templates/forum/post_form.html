@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h3>Create or update a post</h3>
+        <form class="mt-3" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>{{ form.title.label }}</label>
+                {{ form.title }}
+                {% if not form.title.errors %}
+                    <small class="text-muted ml-2">
+                      Must be 0-60 characters long.
+                    </small>
+                {% else %}
+                    {% for error in form.title.errors %}
+                        <small class="text-danger ml-2">{{ error }}</small>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.description.label }}</label>
+                {{ form.description }}
+                {% if not form.description.errors %}
+                    <small class="text-muted ml-2">
+                      Post description is required.
+                    </small>
+                {% else %}
+                    {% for error in form.description.errors %}
+                        <small class="text-danger ml-2">{{ error }}</small>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.tags.label }}</label>
+                {{ form.tags }}
+                {% if not form.tags.errors %}
+                    <small class="text-muted ml-2">
+                      You can select one, none or multiple tags.
+                    </small>
+                {% else %}
+                    {% for error in form.tags.errors %}
+                        <small class="text-danger ml-2">{{ error }}</small>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-secondary mb-3">Submit</button>
+        </form>
+    </div>
+{% endblock %}

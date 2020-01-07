@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'forum/css/category_list.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            {% for category in category_list %}
+                <div class="col-sm-6 mb-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ category.name }}</h5>
+                            <p class="card-text">{{ category.description }}</p>
+                            {% if category.threads.first %}
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        Last updated {{ category.threads.first.created }}
+                                    </small>
+                                </p>
+                                <a href="{% url 'forum_category_detail' category.pk %}" class="btn btn-secondary">Threads</a>
+                            {% else %}
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        No threads found under this category
+                                    </small>
+                                </p>
+                                <a class="btn btn-secondary disabled">
+                                    Threads
+                                </a>
+                            {% endif %}
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'forum_thread_create' category.pk %}" class="btn btn-secondary">
+                                    Add Thread
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

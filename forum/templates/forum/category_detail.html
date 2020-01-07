@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'forum/css/category_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">{{ category.name }} Category</h1>
+                <p class="lead">{{ category.description }}</p>
+            </div>
+        </div>
+        <h3>Threads</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Created By</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for thread in category.threads.all %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'forum_thread_detail' thread.pk %}">{{ thread.name }}</a>
+                        </td>
+                        <td>{{ thread.description | truncatechars:30 }}</td>
+                        <td>{{ thread.created }}</td>
+                        <td>{{ thread.admin.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if request.user.is_authenticated %}
+        <div id="add-button">
+            <a href="{% url 'forum_thread_create' category.pk %}" class="add-thread btn btn-secondary">Add</a>
+        </div>
+    {% endif %}
+{% endblock %}

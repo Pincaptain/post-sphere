@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="alert alert-success" role="alert">
+            You have been successfully logged out!
+        </div>
+        <a href="{% url 'forum_category_list' %}" class="btn btn-secondary">Go Back</a>
+    </div>
+{% endblock %}

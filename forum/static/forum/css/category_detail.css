@@ -1,0 +1,16 @@
+.jumbotron {
+    border-radius: 10px;
+    background-color: white;
+}
+
+.add-thread {
+  color: white !important;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+#add-button {
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
+}

@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'forum/css/thread_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'forum_category_detail' thread.category.pk %}">
+                        {{ thread.category.name }}
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ thread.name }}</li>
+            </ol>
+        </nav>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">{{ thread.name }} Thread</h1>
+                <p class="lead">{{ thread.description }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <h3>Posts</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Created By</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for post in thread.posts.all %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'forum_post_detail' post.pk %}">{{ post.title }}</a>
+                            </td>
+                            <td>{{ post.description | truncatechars:30 }}</td>
+                            <td>{{ post.created }}</td>
+                            <td>{{ post.op.username }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-4 mb-3">
+                <h3>Rules</h3>
+                <ul class="list-group">
+                    {% for rule in thread.rules.all %}
+                        <li class="list-group-item">
+                            <a href="{% url 'forum_rule_detail' rule.pk %}">
+                                {{ rule.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% if request.user.is_authenticated %}
+        <div id="add-button">
+            <a href="{% url 'forum_post_create' thread.pk %}" class="add-post btn btn-secondary">Add</a>
+        </div>
+    {% endif %}
+    {% if request.user == thread.admin %}
+        <div id="delete-button">
+            <a href="{% url 'forum_thread_delete' thread.pk %}" class="delete-thread btn btn-secondary">Delete</a>
+        </div>
+        <div id="update-button">
+            <a href="{% url 'forum_thread_update' thread.pk %}" class="update-thread btn btn-secondary">Update</a>
+        </div>
+    {% endif %}
+{% endblock %}

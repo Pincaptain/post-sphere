@@ -1,0 +1,45 @@
+.breadcrumb {
+    background-color: #f8f9fa !important;
+    border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.jumbotron {
+    border-radius: 10px;
+    background-color: white;
+}
+
+.add-post {
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+#add-button {
+    position: fixed;
+    bottom: -4px;
+    right: 10px;
+}
+
+.delete-thread {
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+#delete-button {
+    position: fixed;
+    bottom: -4px;
+    right: 100px;
+}
+
+.update-thread {
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+#update-button {
+    position: fixed;
+    bottom: -4px;
+    right: 210px;
+}

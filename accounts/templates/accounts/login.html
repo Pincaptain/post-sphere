@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-5 justify-content-center">
+        {% if request.GET.redirect == 'register' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Successfully registered an user! Please login now.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        {% if next %}
+            {% if user.is_authenticated %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Stop!</strong> Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% else %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Stop!</strong> Authenticated users only. Login to proceed!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Invalid username or password. Please try again!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>{{ form.username.label }}</label>
+                {{ form.username }}
+                <small class="form-text text-muted">Username already taken! Just kidding.</small>
+            </div>
+            <div class="form-group">
+                <label>{{ form.password.label }}</label>
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn btn-secondary">Login</button>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+{% endblock %}

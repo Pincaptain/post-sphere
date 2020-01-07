@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-5 justify-content-center">
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>{{ form.username.label }}</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                    {% endfor %}
+                {% else %}
+                    <small class="form-text text-muted">Set your mind free. Find a creative username!</small>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                    {% endfor %}
+                {% else %}
+                    <small class="form-text text-muted">Use a legit email!</small>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.password.label }}</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                    {% endfor %}
+                {% else %}
+                    <small class="form-text text-muted">Make it complex and fancy!</small>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label>{{ form.confirm_password.label }}</label>
+                {{ form.confirm_password }}
+                {% if form.confirm_password.errors %}
+                    {% for error in form.confirm_password.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                    {% endfor %}
+                {% else %}
+                    <small class="form-text text-muted">
+                        Just write the same thing you wrote in the previous field!
+                    </small>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-secondary">Register</button>
+        </form>
+    </div>
+{% endblock %}
